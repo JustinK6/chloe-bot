@@ -7,6 +7,7 @@ class Tourny(commands.Cog):
     self.client = client
     self.roster = []
     self.tournyStarted = False
+    self.tournyMessageID = None
     self.tourny = Tournament(self.roster)
 
   # Resets the tournament
@@ -16,27 +17,37 @@ class Tourny(commands.Cog):
     self.tournyStarted = False
     await ctx.send("Tournament has been reset!")
 
-  # Adds a specified player to the tourny
-  @commands.command(aliases = ['atp'])
-  async def addtournyplayer(self, ctx, player):
-    # Make sure the tournament hasn't already started
-    if self.tournyStarted == False:
-      # Add player to roster
-      self.roster.append(player)
-      await ctx.send(f'Player {player} has been added to the bracket.')
+  # Creates a message to notify the initialization of tourny, upon reactions players will be added to the tourny
+  @commands.command(aliases = ['it'])
+  async def initializeTourny(self, ctx, *, date):
+    tournyMessage = await ctx.send(f"React to this message to be added to the tourny roster on {date}!")
+
+    # Set the tourny message ID to the message sent
+    self.tournyMessageID = tournyMessage.id
+
+  # If a reaction is added to the tourny message, add player to tourny roster
+  @commands.Cog.listener()
+  async def on_raw_reaction_add(self, payload):
+    if payload.message_id == self.tournyMessageID:
+      name = payload.member.display_name
+
+      # Make sure player is not already in roster before adding
+      if not name in self.roster:
+        self.roster.append(name)
     else:
-      await ctx.send('Tournament has already started, you can no longer add players!')
+      pass
 
   # Displays the roster of those added to the tourny
   @commands.command(aliases = ['roster'])
   async def _roster(self, ctx):
-    resultString = "Current tournament roster:"
+    resultString = "```Current tournament roster:"
 
     # Iterate over each player in the roster and add to string
     for player in self.roster:
       resultString += '\n'
       resultString += player
 
+    resultString += "```"
     await ctx.send(resultString)
 
   # Starts the tourny

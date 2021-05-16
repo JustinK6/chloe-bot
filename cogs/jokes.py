@@ -31,6 +31,10 @@ class Jokes(commands.Cog):
   @commands.command()
   async def goku(self, ctx):
     await ctx.send('COUNTER CITY BABY')
+  
+  @commands.command()
+  async def kas(self, ctx):
+    await ctx.send('Kas is a TRAITOR :frowning:')
 
 def setup(client):
   client.add_cog(Jokes(client))

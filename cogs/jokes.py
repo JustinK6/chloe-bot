@@ -36,6 +36,10 @@ class Jokes(commands.Cog):
   async def kas(self, ctx):
     await ctx.send('Kas is a TRAITOR :frowning:')
 
+  @commands.command()
+  async def boba(self, ctx):
+    await ctx.send('Someone get this man to join a tourny already')
+
   @commands.command(aliases = ['seal'])
   async def sealsworth(self, ctx):
     await ctx.send('Who\'s that? Never heard of him.')

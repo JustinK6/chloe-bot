@@ -28,7 +28,7 @@ class Utils(commands.Cog):
 
   @commands.command()
   async def cr(self, ctx, one, two):
-    await ctx.send(f'Your fastest unit: {one}\n Enemy fastest CR: {two}\n Enemy fastest speed: {int(two) * int(one)}')
+    await ctx.send(f'Your fastest unit: {one}\n Enemy fastest CR: {two}\n Enemy fastest speed: {float(two) * float(one)}')
 
   @commands.command()
   @has_permissions(administrator = True, manage_messages = True, manage_roles = True)

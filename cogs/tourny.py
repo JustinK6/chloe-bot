@@ -1,6 +1,7 @@
 import discord
 
 from discord.ext import commands
+from ..db import db
 
 class Tourny(commands.Cog):
   def __init__(self, client):
@@ -21,15 +22,27 @@ class Tourny(commands.Cog):
   @commands.command(aliases = ['it'])
   async def initializeTourny(self, ctx, *, date):
     tournyMessage = await ctx.send(f"React to this message to be added to the tourny roster on {date}!")
+    
+    guildID = ctx.channel.guild.id
+    reactMessageID = tournyMessage.id
+    tournyStarted = 0
 
-    # Set the tourny message ID to the message sent
-    self.tournyMessageID = tournyMessage.id
+    query = """
+        DELETE FROM Tournaments WHERE guild_id = ?
+        DELETE FROM Roster WHERE guild_id = ?
+        INSERT INTO Tournaments VALUES (?, ?, ?)"""
+    parameters = (guildID, guildID, guildID, reactMessageID, tournyStarted)
+
+    db.execute(query, parameters)
 
   # If a reaction is added to the tourny message, add player to tourny roster
   @commands.Cog.listener()
   async def on_raw_reaction_add(self, payload):
+    # Fetch react message id from database
+
     if payload.message_id == self.tournyMessageID:
       name = payload.member.display_name
+      id = payload.member.id
 
       # Make sure player is not already in roster before adding
       if not name in self.roster:

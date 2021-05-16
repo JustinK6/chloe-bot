@@ -3,3 +3,6 @@
 
 # Environment
 .env
+
+# Database
+/data/

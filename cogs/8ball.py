@@ -30,7 +30,7 @@ class EightBall(commands.Cog):
                 'Outlook not so good',
                 'Very doubtful']
 
-    await ctx.send(f'Your Question: {question}\nAnswer: {random.choice(responses)}')
+    await ctx.send(f'{random.choice(responses)}')
 
 def setup(client):
   client.add_cog(EightBall(client))

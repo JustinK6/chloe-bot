@@ -18,7 +18,9 @@ class Jokes(commands.Cog):
                 'ass',
                 'gtfo',
                 'shove a cactus up your ass',
-                'scrub']
+                'scrub',
+                'Oi',
+                'Asssssss']
 
     await ctx.send(f'{random.choice(responses)}')
 

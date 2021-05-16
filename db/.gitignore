@@ -1,0 +1,8 @@
+# Dependencies
+/__pycache__/
+
+# Environment
+.env
+
+# Database
+/data/

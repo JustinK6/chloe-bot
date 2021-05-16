@@ -27,8 +27,8 @@ class Utils(commands.Cog):
     await ctx.send(f'Pong! {round(self.client.latency * 1000)}ms')
 
   @commands.command()
-  async def cd(self, ctx, one, two):
-    await ctx.send(f'Your fastest unit: {one}\n Enemy fastest CR: {two}\n Enemy fastest speed: {two * one}')
+  async def cr(self, ctx, one, two):
+    await ctx.send(f'Your fastest unit: {one}\n Enemy fastest CR: {two}\n Enemy fastest speed: {int(two) * int(one)}')
 
   @commands.command()
   @has_permissions(administrator = True, manage_messages = True, manage_roles = True)

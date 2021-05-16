@@ -1,7 +1,7 @@
 import discord
 
 from discord.ext import commands
-from ..db import db
+from .db import db
 
 class Tourny(commands.Cog):
   def __init__(self, client):
@@ -27,13 +27,14 @@ class Tourny(commands.Cog):
     reactMessageID = tournyMessage.id
     tournyStarted = 0
 
-    query = """
-        DELETE FROM Tournaments WHERE guild_id = ?
-        DELETE FROM Roster WHERE guild_id = ?
-        INSERT INTO Tournaments VALUES (?, ?, ?)"""
-    parameters = (guildID, guildID, guildID, reactMessageID, tournyStarted)
+    query = "DELETE FROM Tournaments WHERE guild_id = ?;"
+    db.execute(query, guildID)
 
-    db.execute(query, parameters)
+    query = "DELETE FROM Roster WHERE guild_id = ?;"
+    db.execute(query, guildID)
+
+    query = "INSERT INTO Tournaments VALUES (?, ?, ?);"
+    db.execute(query, guildID, reactMessageID, tournyStarted)
 
   # If a reaction is added to the tourny message, add player to tourny roster
   @commands.Cog.listener()

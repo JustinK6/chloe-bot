@@ -18,8 +18,11 @@ def build():
             id INTEGER PRIMARY KEY,
             nick TEXT,
             guild_id INTEGER
-        );
-        
+        );"""
+    cur.execute(query)
+    commit()
+    
+    query = """
         CREATE TABLE IF NOT EXISTS Tournaments(
             guild_id INTEGER PRIMARY KEY,
             react_message_id INTEGER,

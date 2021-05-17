@@ -75,13 +75,70 @@ class Tourny(commands.Cog):
   # Generates tournament brackets
   @commands.command(aliases = ['gb'])
   async def generateBracket(self, ctx):
-    # Fetch the roster from database
+    # Remove any previous bracket information
     guildID = ctx.channel.guild.id
+    query = "DELETE FROM Matches WHERE guild_id = ?"
+    db.execute(query, guildID)
+
+    # Fetch the roster from database
     query = "SELECT nick FROM ROSTER WHERE guild_id = ?;"
     roster = db.fetch(query, guildID)
 
     # Shuffle bracket
     random.shuffle(roster)
 
+    # Generate round one brackets
+    matchNum = 1
+    round = 1
+    matches = []
+    for i in range(0, len(roster), 2):
+      query = "INSERT INTO Matches VALUES (?, ?, ?, ?, ?)"
+      if i + 1 == len(roster):
+        db.execute(query, guildID, matchNum, round, roster[i][0], "Bye")
+      else:
+        db.execute(query, guildID, matchNum, round, roster[i][0], roster[i + 1][0])
+      matches.append(matchNum)
+      matchNum += 1
+
+    # Shuffle again
+    random.shuffle(matches)
+
+    # Generate other rounds
+    while len(matches) > 1:
+      round += 1
+      next_matches = []
+      
+      for i in range(0, len(matches), 2):
+        query = "INSERT INTO Matches VALUES (?, ?, ?, ?, ?)"
+        if i + 1 == len(matches):
+          db.execute(query, guildID, matchNum, round, "Winner of Match " + str(matches[i]), "Bye")
+        else:
+          db.execute(query, guildID, matchNum, round, "Winner of Match " + str(matches[i]), "Winner of Match " + str(matches[i + 1]))
+        next_matches.append(matchNum)
+        matchNum += 1
+
+      matches = next_matches
+
+  @commands.command(aliases = ['b'])
+  async def bracket(self, ctx):
+    # Fetch the roster from database
+    guildID = ctx.channel.guild.id
+    query = "SELECT match_num, player_one, player_two, round FROM Matches WHERE guild_id = ?;"
+    bracket = db.fetch(query, guildID)
+
+    # Sort bracket list by round
+    bracket.sort(key=lambda tup: tup[3])
+
+    curRound = 1
+    resultString = "MATCHES:\n\nROUND 1:\n"
+    for match in bracket:
+      if curRound != match[3]:
+        curRound = match[3]
+        resultString += "\nROUND " + str(curRound) + "\n"
+      resultString += "Match " + str(match[0]) + ": " + match[1] + " vs " + match[2]
+      resultString += "\n"
+
+    await ctx.send(resultString)
+    
 def setup(client):
   client.add_cog(Tourny(client))

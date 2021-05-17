@@ -33,6 +33,19 @@ def build():
     cur.execute(query)
     commit()
 
+    query = """
+        CREATE TABLE IF NOT EXISTS Matches(
+            guild_id INTEGER,
+            match_num INTEGER,
+            round INTEGER,
+            player_one TEXT,
+            player_two TEXT,
+            PRIMARY KEY(guild_id, match_num)
+        );"""
+
+    cur.execute(query)
+    commit()
+
 # Execute a command
 def execute(command, *values):
     cur.execute(command, tuple(values))

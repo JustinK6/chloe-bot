@@ -1,4 +1,5 @@
 import discord
+import random
 
 from discord.ext import commands
 from .db import db
@@ -6,10 +7,6 @@ from .db import db
 class Tourny(commands.Cog):
   def __init__(self, client):
     self.client = client
-    self.roster = []
-    self.tournyStarted = False
-    self.tournyMessageID = None
-    self.tourny = Tournament(self.roster)
 
   # Resets the tournament
   @commands.command(aliases = ['rt'])
@@ -39,15 +36,22 @@ class Tourny(commands.Cog):
   # If a reaction is added to the tourny message, add player to tourny roster
   @commands.Cog.listener()
   async def on_raw_reaction_add(self, payload):
-    # Fetch react message id from database
+    guild_id = payload.guild_id
 
-    if payload.message_id == self.tournyMessageID:
+    # Fetch react message id from database
+    query = "SELECT react_message_id FROM Tournaments WHERE guild_id = ?;"
+    for value in db.fetch(query, guild_id):
+      (reactMessageID) = value
+
+    # Check if reaction is on reaction message
+    if payload.message_id == int(reactMessageID[0]):
       name = payload.member.display_name
       id = payload.member.id
+      print(name)
 
       # Make sure player is not already in roster before adding
-      if not name in self.roster:
-        self.roster.append(name)
+      query = "INSERT INTO Roster VALUES (?,?,?);"
+      db.execute(query, id, name, guild_id)
     else:
       pass
 
@@ -56,39 +60,28 @@ class Tourny(commands.Cog):
   async def _roster(self, ctx):
     resultString = "```Current tournament roster:"
 
-    # Iterate over each player in the roster and add to string
-    for player in self.roster:
+    # Get roster from database
+    guildID = ctx.channel.guild.id
+    query = "SELECT nick FROM ROSTER WHERE guild_id = ?;"
+    roster = db.fetch(query, guildID)
+
+    for player in roster:
       resultString += '\n'
-      resultString += player
+      resultString += player[0]
 
     resultString += "```"
     await ctx.send(resultString)
 
-  # Starts the tourny
-  @commands.command(aliases = ['st'])
-  async def starttourny(self, ctx):
-    await ctx.send('Are you sure you want to start the tourny? You will no longer be able to add or remove members! (Y or N)')
+  # Generates tournament brackets
+  @commands.command(aliases = ['gb'])
+  async def generateBracket(self, ctx):
+    # Fetch the roster from database
+    guildID = ctx.channel.guild.id
+    query = "SELECT nick FROM ROSTER WHERE guild_id = ?;"
+    roster = db.fetch(query, guildID)
 
-    def check(m):
-      return m.author == ctx.author
-    
-    msg  = await self.client.wait_for('message', check = check)
-
-    if msg.content == 'Y' or msg.content == 'y':
-      self.tournyStarted = True
-      await ctx.send('Tournament has been started!')
-    elif msg.content == 'N' or msg.content == 'n':
-      await ctx.send('Cancelled starting tournament.')
-    else:
-      await ctx.send('Invalid answer!')
-    
+    # Shuffle bracket
+    random.shuffle(roster)
 
 def setup(client):
   client.add_cog(Tourny(client))
-
-# classes for tournaments
-class Tournament:
-  def __init__(self, players):
-    self.players = players
-    self.playerCount = len(players)
-    self.games = []

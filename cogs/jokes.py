@@ -26,7 +26,7 @@ class Jokes(commands.Cog):
 
   @commands.command()
   async def morvek(self, ctx):
-    await ctx.send('RIP Flan RIP Flidica')
+    await ctx.send('RIP Flan RIP Flidica RIP Spez RIP SBA')
 
   @commands.command()
   async def goku(self, ctx):
@@ -39,10 +39,6 @@ class Jokes(commands.Cog):
   @commands.command()
   async def boba(self, ctx):
     await ctx.send('Someone get this man to join a tourny already')
-
-  @commands.command(aliases = ['seal'])
-  async def sealsworth(self, ctx):
-    await ctx.send('Who\'s that? Never heard of him.')
 
 def setup(client):
   client.add_cog(Jokes(client))

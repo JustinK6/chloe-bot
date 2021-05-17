@@ -15,9 +15,10 @@ def commit():
 def build():
     query = """
         CREATE TABLE IF NOT EXISTS Roster(
-            id INTEGER PRIMARY KEY,
+            id INTEGER,
             nick TEXT,
-            guild_id INTEGER
+            guild_id INTEGER,
+            PRIMARY KEY(id, guild_id)
         );"""
     cur.execute(query)
     commit()

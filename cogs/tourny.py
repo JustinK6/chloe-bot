@@ -151,27 +151,29 @@ class Tourny(commands.Cog):
       await ctx.send("Error with the parameters!")
       return
 
+    guildID = ctx.channel.guild.id
+
     query = ""
     if winner == 1:
-      query = "SELECT player_one FROM Matches WHERE match_num = ?"
+      query = "SELECT player_one FROM Matches WHERE match_num = ? AND guild_id = ?"
     elif winner == 2:
-      query = "SELECT player_two FROM Matches WHERE match_num = ?"
+      query = "SELECT player_two FROM Matches WHERE match_num = ? AND guild_id = ?"
     else:
       await ctx.send("Enter '1' or '2' for the match winner parameter!")
       return
     
-    winnerName = db.fetch(query, match)
+    winnerName = db.fetch(query, match, guildID)
 
     # Update match number inputted
-    query = "UPDATE Matches SET winner = ? WHERE match_num = ?"
-    db.execute(query, winnerName[0][0], match)
+    query = "UPDATE Matches SET winner = ? WHERE match_num = ? AND guild_id = ?"
+    db.execute(query, winnerName[0][0], match, guildID)
 
     # Update matches in future rounds
-    query = "UPDATE Matches SET player_one = ? WHERE player_one LIKE ?"
-    db.execute(query, winnerName[0][0], "________________" + str(match) + "%")
+    query = "UPDATE Matches SET player_one = ? WHERE player_one LIKE ? AND guild_id = ?"
+    db.execute(query, winnerName[0][0], "________________" + str(match) + "%", guildID)
 
-    query = "UPDATE Matches SET player_two = ? WHERE player_one LIKE ?"
-    db.execute(query, winnerName[0][0], "________________" + str(match) + "%")
+    query = "UPDATE Matches SET player_two = ? WHERE player_two LIKE ? AND guild_id = ?"
+    db.execute(query, winnerName[0][0], "________________" + str(match) + "%", guildID)
       
 def setup(client):
   client.add_cog(Tourny(client))

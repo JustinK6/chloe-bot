@@ -43,6 +43,10 @@ class Jokes(commands.Cog):
   @commands.command()
   async def boba(self, ctx):
     await ctx.send('Someone get this man to join a tourny already')
+
+  @commands.command()
+  async def seal(self, ctx):
+    await ctx.send('<a:catJam:845829843332759563> <a:rainbowweeb:845829831819526144>')
   
   @commands.command()
   async def sonic(self, ctx):

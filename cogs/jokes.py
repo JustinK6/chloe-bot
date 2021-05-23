@@ -9,7 +9,11 @@ class Jokes(commands.Cog):
 
   @commands.command()
   async def zzone(self, ctx):
-    await ctx.send('zZoNe is a power abusing bully.')
+    responses = ['zZoNe is a power abusing bully.',
+                 'zZoNe sucks',
+                 'Ban zZoNe']
+
+    await ctx.send(f'{random.choice(responses)}')
 
   @commands.command()
   async def zzonequote(self, ctx):

@@ -40,6 +40,7 @@ def build():
             round INTEGER,
             player_one TEXT,
             player_two TEXT,
+            winner TEXT,
             PRIMARY KEY(guild_id, match_num)
         );"""
 

@@ -37,6 +37,7 @@ class Tourny(commands.Cog):
   @commands.Cog.listener()
   async def on_raw_reaction_add(self, payload):
     guild_id = payload.guild_id
+    reactMessageID = (0)
 
     # Fetch react message id from database
     query = "SELECT react_message_id FROM Tournaments WHERE guild_id = ?;"
@@ -92,11 +93,11 @@ class Tourny(commands.Cog):
     round = 1
     matches = []
     for i in range(0, len(roster), 2):
-      query = "INSERT INTO Matches VALUES (?, ?, ?, ?, ?)"
+      query = "INSERT INTO Matches VALUES (?, ?, ?, ?, ?, ?)"
       if i + 1 == len(roster):
-        db.execute(query, guildID, matchNum, round, roster[i][0], "Bye")
+        db.execute(query, guildID, matchNum, round, roster[i][0], "Bye", "N/A")
       else:
-        db.execute(query, guildID, matchNum, round, roster[i][0], roster[i + 1][0])
+        db.execute(query, guildID, matchNum, round, roster[i][0], roster[i + 1][0], "N/A")
       matches.append(matchNum)
       matchNum += 1
 
@@ -109,11 +110,11 @@ class Tourny(commands.Cog):
       next_matches = []
       
       for i in range(0, len(matches), 2):
-        query = "INSERT INTO Matches VALUES (?, ?, ?, ?, ?)"
+        query = "INSERT INTO Matches VALUES (?, ?, ?, ?, ?, ?)"
         if i + 1 == len(matches):
-          db.execute(query, guildID, matchNum, round, "Winner of Match " + str(matches[i]), "Bye")
+          db.execute(query, guildID, matchNum, round, "Winner of Match " + str(matches[i]), "Bye", "N/A")
         else:
-          db.execute(query, guildID, matchNum, round, "Winner of Match " + str(matches[i]), "Winner of Match " + str(matches[i + 1]))
+          db.execute(query, guildID, matchNum, round, "Winner of Match " + str(matches[i]), "Winner of Match " + str(matches[i + 1]), "N/A")
         next_matches.append(matchNum)
         matchNum += 1
 
@@ -123,7 +124,7 @@ class Tourny(commands.Cog):
   async def bracket(self, ctx):
     # Fetch the roster from database
     guildID = ctx.channel.guild.id
-    query = "SELECT match_num, player_one, player_two, round FROM Matches WHERE guild_id = ?;"
+    query = "SELECT match_num, player_one, player_two, round, winner FROM Matches WHERE guild_id = ?;"
     bracket = db.fetch(query, guildID)
 
     # Sort bracket list by round
@@ -135,10 +136,42 @@ class Tourny(commands.Cog):
       if curRound != match[3]:
         curRound = match[3]
         resultString += "\nROUND " + str(curRound) + "\n"
-      resultString += "Match " + str(match[0]) + ": " + match[1] + " vs " + match[2]
+      resultString += "Match " + str(match[0]) + ": " + match[1] + " vs " + match[2] + "\t Winner: " + match[4]
       resultString += "\n"
 
     await ctx.send(resultString)
+
+  @commands.command(aliases = ['ub'])
+  async def updateBracket(self, ctx, match, winner):
+    # Fetch match winner from database
+    try:
+      match = int(match)
+      winner = int(winner)
+    except:
+      await ctx.send("Error with the parameters!")
+      return
+
+    query = ""
+    if winner == 1:
+      query = "SELECT player_one FROM Matches WHERE match_num = ?"
+    elif winner == 2:
+      query = "SELECT player_two FROM Matches WHERE match_num = ?"
+    else:
+      await ctx.send("Enter '1' or '2' for the match winner parameter!")
+      return
     
+    winnerName = db.fetch(query, match)
+
+    # Update match number inputted
+    query = "UPDATE Matches SET winner = ? WHERE match_num = ?"
+    db.execute(query, winnerName[0][0], match)
+
+    # Update matches in future rounds
+    query = "UPDATE Matches SET player_one = ? WHERE player_one LIKE ?"
+    db.execute(query, winnerName[0][0], "________________" + str(match) + "%")
+
+    query = "UPDATE Matches SET player_two = ? WHERE player_one LIKE ?"
+    db.execute(query, winnerName[0][0], "________________" + str(match) + "%")
+      
 def setup(client):
   client.add_cog(Tourny(client))

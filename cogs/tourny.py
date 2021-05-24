@@ -9,6 +9,7 @@ class Tourny(commands.Cog):
     self.client = client
 
   # Resets the tournament
+  @commands.has_permissions(administrator=True)
   @commands.command(aliases = ['rt'])
   async def resettourny(self, ctx):
     self.roster = []
@@ -16,6 +17,7 @@ class Tourny(commands.Cog):
     await ctx.send("Tournament has been reset!")
 
   # Creates a message to notify the initialization of tourny, upon reactions players will be added to the tourny
+  @commands.has_permissions(administrator=True)
   @commands.command(aliases = ['it'])
   async def initializeTourny(self, ctx, *, date):
     tournyMessage = await ctx.send(f"React to this message to be added to the tourny roster on {date}!")
@@ -74,6 +76,7 @@ class Tourny(commands.Cog):
     await ctx.send(resultString)
 
   # Generates tournament brackets
+  @commands.has_permissions(administrator=True)
   @commands.command(aliases = ['gb'])
   async def generateBracket(self, ctx):
     # Remove any previous bracket information
@@ -141,6 +144,7 @@ class Tourny(commands.Cog):
 
     await ctx.send(resultString)
 
+  @commands.has_permissions(administrator=True)
   @commands.command(aliases = ['ub'])
   async def updateBracket(self, ctx, match, winner):
     # Fetch match winner from database

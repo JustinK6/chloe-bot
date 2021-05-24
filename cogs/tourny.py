@@ -75,6 +75,12 @@ class Tourny(commands.Cog):
     resultString += "```"
     await ctx.send(resultString)
 
+  @commands.has_permissions(administrator=True)
+  @commands.command(aliases = ['ar'])
+  async def addToRoster(self, ctx, id, nick, guildID):
+    query = "INSERT INTO Roster VALUES (?,?,?);"
+    db.execute(query, id, nick, guildID)
+
   # Generates tournament brackets
   @commands.has_permissions(administrator=True)
   @commands.command(aliases = ['gb'])

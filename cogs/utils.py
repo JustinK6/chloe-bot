@@ -1,4 +1,5 @@
 import discord
+import random
 
 from discord.ext import commands
 from discord.ext.commands import has_permissions, CheckFailure
@@ -29,6 +30,10 @@ class Utils(commands.Cog):
   @commands.command()
   async def cr(self, ctx, one, two):
     await ctx.send(f'Your fastest unit: {one}\n Enemy fastest CR: {two}\n Enemy fastest speed: {float(two) * float(one)}')
+
+  @commands.command(aliases = ['coin', 'cf', 'c'])
+  async def coinFlip(self, ctx):
+    await ctx.send(f'{random.choice(["Heads", "Tails"])}')
 
   @commands.command()
   @has_permissions(administrator = True, manage_messages = True, manage_roles = True)

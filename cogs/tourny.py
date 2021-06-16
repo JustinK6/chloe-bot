@@ -91,7 +91,7 @@ class Tourny(commands.Cog):
     db.execute(query, guildID)
 
     # Fetch the roster from database
-    query = "SELECT nick FROM ROSTER WHERE guild_id = ?;"
+    query = "SELECT nick FROM Roster WHERE guild_id = ?;"
     roster = db.fetch(query, guildID)
 
     # Shuffle bracket

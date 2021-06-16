@@ -10,9 +10,9 @@ class Builds(commands.Cog):
 
   @commands.command()
   async def builds(self, ctx):
-    await ctx.send("""Current available builds: \n
-        aras,\n
-        charlotte,\n
+    await ctx.send("""Current available builds:\n```
+        aras (?aras),
+        charlotte (?charlotte)```
         """)
 
   @commands.command()

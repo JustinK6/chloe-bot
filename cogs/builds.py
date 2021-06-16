@@ -10,10 +10,20 @@ class Builds(commands.Cog):
 
   @commands.command()
   async def builds(self, ctx):
-    await ctx.send("""Current available builds:\n```
-        aras (?aras),
-        charlotte (?charlotte)```
-        """)
+    builds = [
+      'Adventurer Ras (?aras)',
+      'Charlotte (?charlotte)'
+    ]
+
+    text = "Current available builds: ```"
+
+    for b in builds:
+      text += b
+      text += "\n"
+
+    text += "```"
+
+    await ctx.send(text)
 
   @commands.command()
   async def itbuilds(self, ctx):

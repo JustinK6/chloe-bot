@@ -79,8 +79,13 @@ class Builds(commands.Cog):
 
   # Gets the build of a specified character
   @commands.command()
-  async def build(self, ctx, set, *, character):
-    buildquery = "SELECT ImageLink FROM Builds WHERE CharacterName = ? AND MainSet = ? ORDER BY RANDOM() LIMIT 1"
+  async def build(self, ctx, set = None, *, character):
+    buildquery = "SELECT ImageLink FROM Builds WHERE CharacterName = ?"
+    if set == None:
+      buildquery += " ORDER BY RANDOM() LIMIT 1"
+    else:
+      buildquery += " AND MainSet = ? ORDER BY RANDOM() LIMIT 1"
+
     namequery = "SELECT name FROM Names WHERE alias = ?"
 
     validSets = [
@@ -106,12 +111,16 @@ class Builds(commands.Cog):
       await ctx.send("Invalid set.")
       return
 
-    name = db.fetch(namequery, character)
+    name = db.fetch(namequery, character.lower())
     if len(name) == 0:
       await ctx.send("No such character found.")
       return
 
-    build = db.fetch(buildquery, name[0][0], set)
+    if set == None:
+      build = db.fetch(buildquery, name[0][0])
+    else:
+      build = db.fetch(buildquery, name[0][0], set)
+    
     if len(build) == 0:
       await ctx.send("No builds found.")
       return

@@ -37,13 +37,13 @@ class Builds(commands.Cog):
     db.execute(query)
 
   @commands.command()
-  async def addbuild(self, ctx, link, *, character):
+  async def addbuild(self, ctx, link, set, *, character):
     author = ctx.message.author.id
     if author != 277851099850080258:
       return
     
-    query = "INSERT INTO Builds VALUES (?, ?)"
-    db.execute(query, character, link)
+    query = "INSERT INTO Builds VALUES (?, ?, ?)"
+    db.execute(query, character, link, set)
 
   @commands.command()
   async def addname(self, ctx, *, combined):
@@ -79,16 +79,39 @@ class Builds(commands.Cog):
 
   # Gets the build of a specified character
   @commands.command()
-  async def build(self, ctx, *, character):
-    buildquery = "SELECT ImageLink FROM Builds WHERE CharacterName = ? ORDER BY RANDOM() LIMIT 1"
+  async def build(self, ctx, set, *, character):
+    buildquery = "SELECT ImageLink FROM Builds WHERE CharacterName = ? AND MainSet = ? ORDER BY RANDOM() LIMIT 1"
     namequery = "SELECT name FROM Names WHERE alias = ?"
+
+    validSets = [
+      'speed', 
+      'hit', 
+      'crit', 
+      'attack', 
+      'health', 
+      'defense', 
+      'resist', 
+      'destruction', 
+      'lifesteal', 
+      'counter', 
+      'immunity', 
+      'rage', 
+      'unity', 
+      'revenge', 
+      'injury', 
+      'penetration'
+    ]
+
+    if not (set in validSets):
+      await ctx.send("Invalid set.")
+      return
 
     name = db.fetch(namequery, character)
     if len(name) == 0:
       await ctx.send("No such character found.")
       return
 
-    build = db.fetch(buildquery, name[0][0])
+    build = db.fetch(buildquery, name[0][0], set)
     if len(build) == 0:
       await ctx.send("No builds found.")
       return

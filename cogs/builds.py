@@ -98,11 +98,10 @@ class Builds(commands.Cog):
   # Gets list of available characters and aliases
   @commands.command()
   async def builds(self, ctx):
-    resultString = "Current available chracter builds: \n```"
+    resultString = "Current available chracter builds: \n"
 
     namequery = "SELECT DISTINCT name FROM Names"
     names = db.fetch(namequery)
-    print(names)
 
     for name in names:
       aliasquery = "SELECT alias FROM Names WHERE name = ?"
@@ -119,8 +118,24 @@ class Builds(commands.Cog):
         resultString = resultString[0:len(resultString) - 2] # cut off last comma and space
 
       resultString += ")\n"
+ 
+    print(resultString)
 
-    resultString += "```"  
+  # Gets a count of the number of builds each character has
+  @commands.command()
+  async def buildCount(self, ctx):
+    query = "SELECT CharacterName, Count(ImageLink) FROM Builds GROUP BY CharacterName"
+    counts = db.fetch(query)
+
+    resultString = "Number of builds for each character: ```\n"
+    for count in counts:
+      resultString += count[0] # character name
+      resultString += ": "
+      resultString += count[1] # build count
+      resultString += "\n"
+
+    resultString += "```"
+
     await ctx.send(resultString)
 
 def setup(client):

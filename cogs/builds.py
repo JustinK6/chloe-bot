@@ -10,13 +10,30 @@ class Builds(commands.Cog):
 
   @commands.command()
   async def builds(self, ctx):
-      await ctx.send("""Current available builds: \n
+    await ctx.send("""Current available builds: \n
         aras,\n
         charlotte,\n
         """)
 
   @commands.command()
+  async def itbuilds(self, ctx):
+    author = ctx.message.author.id
+    if author != 277851099850080258:
+      return
+
+    query = """CREATE TABLE Builds (
+        CharacterName varchar(256),
+        ImageLink varchar(256) PRIMARY KEY
+        )"""
+    
+    db.execute(query)
+
+  @commands.command()
   async def addbuild(self, ctx, character, link):
+    author = ctx.message.author.id
+    if author != 277851099850080258:
+      return
+    
     query = "INSERT INTO Builds VALUES (?, ?)"
     db.execute(query, character, link)
 

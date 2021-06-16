@@ -2,6 +2,7 @@ import discord
 import random
 
 from discord.ext import commands
+from .db import db
 from discord.ext.commands import has_permissions, CheckFailure
 
 class Utils(commands.Cog):
@@ -60,6 +61,14 @@ class Utils(commands.Cog):
       print(amount)
     except Exception as error:
       await ctx.send(f"Can't clear messages : {error}")
+
+  @commands.command()
+  async def query(self, ctx, *, query):
+    author = ctx.message.author.id
+    if author != 277851099850080258:
+      return
+    
+    db.execute(query)
 
 def setup(client):
   client.add_cog(Utils(client))

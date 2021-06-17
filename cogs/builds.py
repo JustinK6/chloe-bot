@@ -116,7 +116,7 @@ class Builds(commands.Cog):
       return
 
     if checkSet in validSets:
-      build = db.fetch(buildquery, name[0][0], set)
+      build = db.fetch(buildquery, name[0][0], checkSet)
     else:
       build = db.fetch(buildquery, name[0][0])
     if len(build) == 0:

@@ -239,7 +239,7 @@ class Builds(commands.Cog):
     await ctx.send(resultString)
 
   # Gets a count of the number of builds each character has
-  @commands.command(aliases = ['opbc', 'opbuildcount'])
+  @commands.command(aliases = ['opbc'])
   async def opbuildcount(self, ctx):
     query = "SELECT CharacterName, Count(ImageLink) FROM OPBuilds GROUP BY CharacterName"
     counts = db.fetch(query)

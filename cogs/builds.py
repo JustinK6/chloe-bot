@@ -80,6 +80,8 @@ class Builds(commands.Cog):
   # Gets the build of a specified character
   @commands.command()
   async def build(self, ctx, *, input):
+    input = input.lower()
+
     checkSet = input.split()[0]
     buildquery = ""
     namequery = "SELECT name FROM Names WHERE alias = ?"

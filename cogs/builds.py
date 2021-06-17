@@ -222,9 +222,26 @@ class Builds(commands.Cog):
     print(resultString)
 
   # Gets a count of the number of builds each character has
-  @commands.command(aliases = ['bc', 'buildcount'])
-  async def buildCount(self, ctx):
+  @commands.command(aliases = ['bc'])
+  async def buildcount(self, ctx):
     query = "SELECT CharacterName, Count(ImageLink) FROM Builds GROUP BY CharacterName"
+    counts = db.fetch(query)
+
+    resultString = "Number of builds for each character: ```\n"
+    for count in counts:
+      resultString += count[0] # character name
+      resultString += ": "
+      resultString += str(count[1]) # build count
+      resultString += "\n"
+
+    resultString += "```"
+
+    await ctx.send(resultString)
+
+  # Gets a count of the number of builds each character has
+  @commands.command(aliases = ['opbc', 'opbuildcount'])
+  async def opbuildcount(self, ctx):
+    query = "SELECT CharacterName, Count(ImageLink) FROM OPBuilds GROUP BY CharacterName"
     counts = db.fetch(query)
 
     resultString = "Number of builds for each character: ```\n"

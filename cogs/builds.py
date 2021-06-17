@@ -79,8 +79,9 @@ class Builds(commands.Cog):
 
   # Gets the build of a specified character
   @commands.command()
-  async def build(self, ctx, set, *, character):
-    buildquery = "SELECT ImageLink FROM Builds WHERE CharacterName = ? AND MainSet = ? ORDER BY RANDOM() LIMIT 1"
+  async def build(self, ctx, *, arg):
+    checkSet = arg.split[0]
+    buildquery = ""
     namequery = "SELECT name FROM Names WHERE alias = ?"
 
     validSets = [
@@ -102,34 +103,22 @@ class Builds(commands.Cog):
       'penetration'
     ]
 
-    if not (set in validSets):
-      await ctx.send("Invalid set.")
-      return
+    if not (checkSet in validSets):
+      buildquery = "SELECT ImageLink FROM Builds WHERE CharacterName = ? ORDER BY RANDOM() LIMIT 1"
+      character = arg
+    else:
+      buildquery = "SELECT ImageLink FROM Builds WHERE CharacterName = ? AND MainSet = ? ORDER BY RANDOM() LIMIT 1"
+      character = arg[len(checkSet + 1):]
 
     name = db.fetch(namequery, character)
     if len(name) == 0:
       await ctx.send("No such character found.")
       return
 
-    build = db.fetch(buildquery, name[0][0], set)
-    if len(build) == 0:
-      await ctx.send("No builds found.")
-      return
-    
-    await ctx.send(build[0][0])
-
-  # Gets the build of a specified character
-  @commands.command()
-  async def build(self, ctx, *, character):
-    buildquery = "SELECT ImageLink FROM Builds WHERE CharacterName = ? ORDER BY RANDOM() LIMIT 1"
-    namequery = "SELECT name FROM Names WHERE alias = ?"
-
-    name = db.fetch(namequery, character)
-    if len(name) == 0:
-      await ctx.send("No such character found.")
-      return
-
-    build = db.fetch(buildquery, name[0][0])
+    if checkSet in validSets:
+      build = db.fetch(buildquery, name[0][0], set)
+    else:
+      build = db.fetch(buildquery, name[0][0])
     if len(build) == 0:
       await ctx.send("No builds found.")
       return

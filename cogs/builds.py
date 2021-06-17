@@ -79,8 +79,8 @@ class Builds(commands.Cog):
 
   # Gets the build of a specified character
   @commands.command()
-  async def build(self, ctx, *, arg):
-    checkSet = arg.split[0]
+  async def build(self, ctx, *, input):
+    checkSet = input.split[0]
     buildquery = ""
     namequery = "SELECT name FROM Names WHERE alias = ?"
 
@@ -105,10 +105,10 @@ class Builds(commands.Cog):
 
     if not (checkSet in validSets):
       buildquery = "SELECT ImageLink FROM Builds WHERE CharacterName = ? ORDER BY RANDOM() LIMIT 1"
-      character = arg
+      character = input
     else:
       buildquery = "SELECT ImageLink FROM Builds WHERE CharacterName = ? AND MainSet = ? ORDER BY RANDOM() LIMIT 1"
-      character = arg[len(checkSet + 1):]
+      character = input[len(checkSet + 1):]
 
     name = db.fetch(namequery, character)
     if len(name) == 0:

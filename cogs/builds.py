@@ -108,7 +108,7 @@ class Builds(commands.Cog):
       character = input
     else:
       buildquery = "SELECT ImageLink FROM Builds WHERE CharacterName = ? AND MainSet = ? ORDER BY RANDOM() LIMIT 1"
-      character = input[len(checkSet + 1):]
+      character = input[len(checkSet) + 1:]
 
     name = db.fetch(namequery, character)
     if len(name) == 0:

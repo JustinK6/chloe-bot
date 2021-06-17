@@ -16,7 +16,7 @@ class Builds(commands.Cog):
     if author != 277851099850080258:
       return
 
-    query = """CREATE TABLE Builds (
+    query = """CREATE TABLE OPBuilds (
         CharacterName varchar(256),
         ImageLink varchar(256) PRIMARY KEY
         )"""
@@ -46,6 +46,15 @@ class Builds(commands.Cog):
     db.execute(query, character, link, set)
 
   @commands.command()
+  async def addopbuild(self, ctx, link, set, *, character):
+    author = ctx.message.author.id
+    if author != 277851099850080258:
+      return
+    
+    query = "INSERT INTO OPBuilds VALUES (?, ?, ?)"
+    db.execute(query, character, link, set)
+
+  @commands.command()
   async def addname(self, ctx, *, combined):
     author = ctx.message.author.id
     if author != 277851099850080258:
@@ -67,6 +76,15 @@ class Builds(commands.Cog):
     db.execute(query, link)
 
   @commands.command()
+  async def removeopbuild(self, ctx, link):
+    author = ctx.message.author.id
+    if author != 277851099850080258:
+      return
+    
+    query = "DELETE FROM OPBuilds WHERE ImageLink = ?"
+    db.execute(query, link)
+
+  @commands.command()
   async def removename(self, ctx, *, alias):
     author = ctx.message.author.id
     if author != 277851099850080258:
@@ -78,7 +96,7 @@ class Builds(commands.Cog):
   # REGULAR COMMANDS
 
   # Gets the build of a specified character
-  @commands.command()
+  @commands.command(aliases = ['b', 'bu', 'bui'])
   async def build(self, ctx, *, input):
     input = input.lower()
 
@@ -110,6 +128,56 @@ class Builds(commands.Cog):
       character = input
     else:
       buildquery = "SELECT ImageLink FROM Builds WHERE CharacterName = ? AND MainSet = ? ORDER BY RANDOM() LIMIT 1"
+      character = input[len(checkSet) + 1:]
+
+    name = db.fetch(namequery, character)
+    if len(name) == 0:
+      await ctx.send("No such character found.")
+      return
+
+    if checkSet in validSets:
+      build = db.fetch(buildquery, name[0][0], checkSet)
+    else:
+      build = db.fetch(buildquery, name[0][0])
+    if len(build) == 0:
+      await ctx.send("No builds found.")
+      return
+    
+    await ctx.send(build[0][0])
+
+  # Gets an OP build of a specified character
+  @commands.command(aliases = ['opb'])
+  async def opbuild(self, ctx, *, input):
+    input = input.lower()
+
+    checkSet = input.split()[0]
+    buildquery = ""
+    namequery = "SELECT name FROM Names WHERE alias = ?"
+
+    validSets = [
+      'speed', 
+      'hit', 
+      'crit', 
+      'attack', 
+      'health', 
+      'defense', 
+      'resist', 
+      'destruction', 
+      'lifesteal', 
+      'counter', 
+      'immunity', 
+      'rage', 
+      'unity', 
+      'revenge', 
+      'injury', 
+      'penetration'
+    ]
+
+    if not (checkSet in validSets):
+      buildquery = "SELECT ImageLink FROM OPBuilds WHERE CharacterName = ? ORDER BY RANDOM() LIMIT 1"
+      character = input
+    else:
+      buildquery = "SELECT ImageLink FROM OPBuilds WHERE CharacterName = ? AND MainSet = ? ORDER BY RANDOM() LIMIT 1"
       character = input[len(checkSet) + 1:]
 
     name = db.fetch(namequery, character)

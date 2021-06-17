@@ -129,7 +129,7 @@ class Tourny(commands.Cog):
 
       matches = next_matches
 
-  @commands.command(aliases = ['b'])
+  @commands.command(aliases = ['br'])
   async def bracket(self, ctx):
     # Fetch the roster from database
     guildID = ctx.channel.guild.id

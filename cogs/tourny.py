@@ -54,13 +54,12 @@ class Tourny(commands.Cog):
       name = payload.member.display_name
       id = payload.member.id
       role = discord.utils.get(payload.member.guild.roles, name = "Tourny")
-      print(name)
 
       # Add tournament role
-      if payload.emoji == "<a:maidbonk:855548328108228609>" or  payload.emoji == "<:_Pepe_ludwig:840158099091226664>":
-        await client.add_roles(payload.member, role)
+      if str(payload.emoji) == "<a:maidbonk:855548328108228609>" or  str(payload.emoji) == "<:_Pepe_ludwig:840158099091226664>":
+        await payload.member.add_roles(role)
 
-      if payload.emoji == "<a:maidbonk:855548328108228609>":
+      if str(payload.emoji) == "<a:maidbonk:855548328108228609>":
         # Make sure player is not already in roster before adding
         query = "INSERT INTO Roster VALUES (?,?,?);"
         db.execute(query, id, name, guild_id)

@@ -1,5 +1,6 @@
 import discord
 import random
+from discord import client
 
 from discord.ext import commands
 from .db import db
@@ -20,7 +21,9 @@ class Tourny(commands.Cog):
   @commands.has_permissions(administrator=True)
   @commands.command(aliases = ['it'])
   async def initializeTourny(self, ctx, *, date):
-    tournyMessage = await ctx.send(f"React to this message to be added to the tourny roster on {date}!")
+    tournyMessage = await ctx.send(f"React to this message to be added to the tourny roster on {date}! \n<a:maidbonk:855548328108228609> to be added to the tourny \n<:_Pepe_ludwig:840158099091226664> to only be given the tourny role to ping")
+    await tournyMessage.add_reaction("<a:maidbonk:855548328108228609>")
+    await tournyMessage.add_reaction("<:_Pepe_ludwig:840158099091226664>")
     
     guildID = ctx.channel.guild.id
     reactMessageID = tournyMessage.id
@@ -50,11 +53,17 @@ class Tourny(commands.Cog):
     if payload.message_id == int(reactMessageID[0]):
       name = payload.member.display_name
       id = payload.member.id
+      role = discord.utils.get(payload.member.server.roles, name = "Tourny")
       print(name)
 
-      # Make sure player is not already in roster before adding
-      query = "INSERT INTO Roster VALUES (?,?,?);"
-      db.execute(query, id, name, guild_id)
+      # Add tournament role
+      if payload.emoji == "<a:maidbonk:855548328108228609>" or  payload.emoji == "<:_Pepe_ludwig:840158099091226664>":
+        await client.add_roles(payload.member, role)
+
+      if payload.emoji == "<a:maidbonk:855548328108228609>":
+        # Make sure player is not already in roster before adding
+        query = "INSERT INTO Roster VALUES (?,?,?);"
+        db.execute(query, id, name, guild_id)
     else:
       pass
 

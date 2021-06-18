@@ -53,7 +53,7 @@ class Tourny(commands.Cog):
     if payload.message_id == int(reactMessageID[0]):
       name = payload.member.display_name
       id = payload.member.id
-      role = discord.utils.get(payload.member.server.roles, name = "Tourny")
+      role = discord.utils.get(payload.member.guild.roles, name = "Tourny")
       print(name)
 
       # Add tournament role

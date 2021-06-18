@@ -21,7 +21,7 @@ class Tourny(commands.Cog):
   @commands.has_permissions(administrator=True)
   @commands.command(aliases = ['it'])
   async def initializeTourny(self, ctx, *, date):
-    tournyMessage = await ctx.send(f"React to this message to be added to the tourny roster on {date}! \n<a:maidbonk:855548328108228609> to be added to the tourny \n<:_Pepe_ludwig:840158099091226664> to only be given the tourny role to ping")
+    tournyMessage = await ctx.send(f"React to this message to be added to the tourny roster on {date}! \n<a:maidbonk:855548328108228609> to be added to the tourny \n<:_Pepe_ludwig:840158099091226664> if you would like to not join, but still be given a role to be pinged when matches occur")
     await tournyMessage.add_reaction("<a:maidbonk:855548328108228609>")
     await tournyMessage.add_reaction("<:_Pepe_ludwig:840158099091226664>")
     

@@ -244,7 +244,7 @@ class Builds(commands.Cog):
     query = "SELECT CharacterName, Count(ImageLink) FROM OPBuilds GROUP BY CharacterName"
     counts = db.fetch(query)
 
-    resultString = "Number of builds for each character: ```\n"
+    resultString = "Number of  OP builds for each character: ```\n"
     for count in counts:
       resultString += count[0] # character name
       resultString += ": "

@@ -190,7 +190,7 @@ class Builds(commands.Cog):
     else:
       build = db.fetch(buildquery, name[0][0])
     if len(build) == 0:
-      await ctx.send("No builds found.")
+      await ctx.send("No builds for this character yet in the database!")
       return
     
     await ctx.send(build[0][0])

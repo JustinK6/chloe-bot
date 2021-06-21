@@ -69,7 +69,7 @@ class Builds(commands.Cog):
     processedInput = self.processBuildInputs(input)
 
     if processedInput == None:
-      await ctx.send("Error with flags.")
+      await ctx.send("Error with flags. Try ?buildhelp.")
       return
 
     character = processedInput[0]
@@ -87,7 +87,7 @@ class Builds(commands.Cog):
     buildQuery = self.fetchBuildQuery(name[0][0], flags)
 
     if buildQuery == None:
-      await ctx.send("Error with flags.")
+      await ctx.send("Error with flags. Try ?buildhelp.")
       return
 
     # Attempt to fetch a build for specified character from the database
@@ -95,10 +95,30 @@ class Builds(commands.Cog):
     build = db.fetch(buildQuery)
 
     if len(build) == 0:
-      await ctx.send("No builds found.")
+      await ctx.send("No builds found. Try ?buildhelp, or ?bc for a list of characters with builds.")
       return
     
     await ctx.send(build[0][0])
+
+  # Help command for the build command
+  @commands.command()
+  async def buildhelp(self, ctx):
+    resultString = "Build command format: ?build/?b [-flag(s)] [character name/alias]\n Example command: ?b -mainset=speed -minspeed=290 acoli"
+    resultString += "\n\nCurrent List of flags:\n```"
+
+    flags = [
+      "-mainset: The main set the unit equipped ('speed', 'hit', 'crit', 'attack', 'health', 'defense', 'resist', 'destruction', 'lifesteal', 'counter', 'rage', 'unity', 'revenge', 'injury'",
+      "-minspeed: Minimum speed of the build - any number",
+      "-maxspeed: Maximum speed of the build - any number"
+    ]
+
+    for flag in flags:
+      resultString += flag
+      resultString += "\n"
+
+    resultString += "```"
+
+    await ctx.send(resultString)
 
   # Gets list of available characters and aliases
   @commands.command()

@@ -164,7 +164,7 @@ class Builds(commands.Cog):
 
       count += 1
 
-    return (character, flags)
+    return (characterString, flags)
 
   # Converts a flag to an appropriate query piece as necessary
   def convertFlagToQuery(self, flag):

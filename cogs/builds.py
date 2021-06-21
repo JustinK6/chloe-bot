@@ -37,22 +37,22 @@ class Builds(commands.Cog):
     db.execute(query)
 
   @commands.command()
-  async def addbuild(self, ctx, link, set, *, character):
+  async def addbuild(self, ctx, link, set, attack, defense, health, speed, cchance, cdamage, effectiveness, effectresist, *, character):
     author = ctx.message.author.id
     if author != 277851099850080258:
       return
     
-    query = "INSERT INTO Builds VALUES (?, ?, ?)"
-    db.execute(query, character, link, set)
+    query = "INSERT INTO Builds VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    db.execute(query, character, link, set, attack, defense, health, speed, cchance, cdamage, effectiveness, effectresist)
 
   @commands.command()
-  async def addopbuild(self, ctx, link, set, *, character):
+  async def addopbuild(self, ctx, link, set, attack, defense, health, speed, cchance, cdamage, effectiveness, effectresist, *, character):
     author = ctx.message.author.id
     if author != 277851099850080258:
       return
     
-    query = "INSERT INTO OPBuilds VALUES (?, ?, ?)"
-    db.execute(query, character, link, set)
+    query = "INSERT INTO OPBuilds VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    db.execute(query, character, link, set, attack, defense, health, speed, cchance, cdamage, effectiveness, effectresist)
 
   @commands.command()
   async def addname(self, ctx, *, combined):

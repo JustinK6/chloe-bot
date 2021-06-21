@@ -182,21 +182,21 @@ class Builds(commands.Cog):
 
     # Dictionary of flags to query pieces
     flagToQuery = {
-      "-mainset" : "MainSet = "
+      "-mainset" : f"MainSet = \"{value}\""
     }
 
     # Check if the flag is proper
     if not textFlag in flagToQuery.keys():
       return None
 
-    query = flagToQuery[textFlag] + value
+    query = flagToQuery[textFlag]
 
     return query
 
   # Returns a query based on specified inputs
   def fetchBuildQuery(self, characterString, flags):
     # Initial query
-    query = f"SELECT ImageLink FROM Builds WHERE CharacterName = {characterString} "
+    query = f"SELECT ImageLink FROM Builds WHERE CharacterName = \"{characterString}\" "
 
     # Add onto query for each flag
     for flag in flags:

@@ -86,6 +86,10 @@ class Builds(commands.Cog):
     # Build the query for the build
     buildQuery = self.fetchBuildQuery(name, flags)
 
+    if buildQuery == None:
+      await ctx.send("Error with flags.")
+      return
+
     # Attempt to fetch a build for specified character from the database
     build = db.fetch(buildQuery)
 
@@ -205,7 +209,7 @@ class Builds(commands.Cog):
 
       query += convertedFlag
 
-    return (characterString, query)
+    return query
 
 
 def setup(client):

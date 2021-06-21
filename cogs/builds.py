@@ -183,7 +183,9 @@ class Builds(commands.Cog):
 
     # Dictionary of flags to query pieces
     flagToQuery = {
-      "-mainset" : f"MainSet = \'{value}\' "
+      "-mainset" : f"MainSet = \'{value}\' ",
+      "-minspeed" : f"Speed >= {value} ",
+      "-maxspeed" : f"Speed >= {value} "
     }
 
     # Check if the flag is proper

@@ -91,6 +91,7 @@ class Builds(commands.Cog):
       return
 
     # Attempt to fetch a build for specified character from the database
+    print(buildQuery)
     build = db.fetch(buildQuery)
 
     if len(build) == 0:

@@ -159,11 +159,69 @@ class Builds(commands.Cog):
 
   # HELPER METHODS
 
-  # Returns a query based on specified inputs
-  def fetchBuildQuery(input):
-    
+  # Converts a flag to an appropriate query piece as necessary
+  def convertFlagToQuery(self, flag):
+    # Check that flag is formatted properly
+    tokens = flag.split('=')
+    if not len(tokens) == 2:
+      return None
 
-    return None
+    textFlag = tokens[0]
+    value = tokens[1]
+
+    # Dictionary of flags to query pieces
+    flagToQuery = {
+      "-mainset" : "MainSet = "
+    }
+
+    # Check if the flag is proper
+    if not textFlag in flagToQuery.keys():
+      return None
+
+    query = flagToQuery[textFlag] + tokens[1]
+
+    return query
+
+  # Returns a query based on specified inputs
+  def fetchBuildQuery(self, input):
+    character = [] # Represents list of tokens representing the character
+    flags = [] # Represents list of tokens representing flags
+
+    for token in input.split():
+      # Check if each token is a flag
+      if token.startswith('-'):
+        flags.append(token)
+      else:
+        character.append(token)
+
+    # Build the character string
+    count = 0
+    characterString = ""
+    for token in character:
+      if count == 0:
+        characterString += token
+      else:
+        characterString += " "
+        characterString += token
+
+      count += 1
+
+    # Initial query
+    query = f"SELECT ImageLink FROM Builds WHERE CharacterName = {characterString}"
+
+    # Add onto query for each flag
+    for flag in flags:
+      query += "AND "
+      convertedFlag = self.convertFlagToQuery(flag)
+
+      # Check that flag was successfully converted
+      if convertedFlag == None:
+        return None
+        
+      query += convertedFlag
+
+    return query
+
 
 
 def setup(client):

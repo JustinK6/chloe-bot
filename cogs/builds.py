@@ -101,9 +101,9 @@ class Builds(commands.Cog):
     await ctx.send(build[0][0])
 
   # Help command for the build command
-  @commands.command()
+  @commands.command(aliases=['bh'])
   async def buildhelp(self, ctx):
-    resultString = "Build command format: ?build/?b [-flag(s)] [character name/alias]\n Example command: ?b -mainset=speed -minspeed=290 acoli"
+    resultString = "Build command format: ?build/?b [-flag(s)] [character name/alias]\nExample command: ?b -mainset=speed -minspeed=290 acoli"
     resultString += "\n\nCurrent List of flags:\n```"
 
     flags = [

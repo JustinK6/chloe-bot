@@ -11,32 +11,6 @@ class Builds(commands.Cog):
   # DEVELOPER ONLY COMMANDS
 
   @commands.command()
-  async def itbuilds(self, ctx):
-    author = ctx.message.author.id
-    if author != 277851099850080258:
-      return
-
-    query = """CREATE TABLE OPBuilds (
-        CharacterName varchar(256),
-        ImageLink varchar(256) PRIMARY KEY
-        )"""
-    
-    db.execute(query)
-
-  @commands.command()
-  async def itnames(self, ctx):
-    author = ctx.message.author.id
-    if author != 277851099850080258:
-      return
-
-    query = """CREATE TABLE Names (
-      alias varchar(256) PRIMARY KEY,
-      name varchar(256)
-    )"""
-
-    db.execute(query)
-
-  @commands.command()
   async def addbuild(self, ctx, link, set, immunity, attack, defense, health, speed, cchance, cdamage, effectiveness, effectresist, *, character):
     author = ctx.message.author.id
     if author != 277851099850080258:
@@ -87,13 +61,13 @@ class Builds(commands.Cog):
   # REGULAR COMMANDS
 
   # Gets the build of a specified character
-  @commands.command(aliases = ['b', 'bu', 'bui'])
+  @commands.command(aliases = ['b'])
   async def build(self, ctx, *, input):
     input = input.lower()
+    #query = self.fetchBuildQuery(input)
 
     checkSet = input.split()[0]
     buildquery = ""
-    namequery = "SELECT name FROM Names WHERE alias = ?"
 
     validSets = [
       'speed', 
@@ -121,11 +95,15 @@ class Builds(commands.Cog):
       buildquery = "SELECT ImageLink FROM Builds WHERE CharacterName = ? AND MainSet = ? ORDER BY RANDOM() LIMIT 1"
       character = input[len(checkSet) + 1:]
 
+    # Check if the character being searched for is valid
+    namequery = "SELECT name FROM Names WHERE alias = ?"
+
     name = db.fetch(namequery, character)
     if len(name) == 0:
       await ctx.send("No such character found.")
       return
 
+    # Attempt to fetch a build for specified character from the database
     if checkSet in validSets:
       build = db.fetch(buildquery, name[0][0], checkSet)
     else:
@@ -178,6 +156,15 @@ class Builds(commands.Cog):
     resultString += "```"
 
     await ctx.send(resultString)
+
+  # HELPER METHODS
+
+  # Returns a query based on specified inputs
+  def fetchBuildQuery(input):
+    
+
+    return None
+
 
 def setup(client):
   client.add_cog(Builds(client))

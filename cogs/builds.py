@@ -84,14 +84,13 @@ class Builds(commands.Cog):
       return
 
     # Build the query for the build
-    buildQuery = self.fetchBuildQuery(name, flags)
+    buildQuery = self.fetchBuildQuery(name[0][0], flags)
 
     if buildQuery == None:
       await ctx.send("Error with flags.")
       return
 
     # Attempt to fetch a build for specified character from the database
-    print(buildQuery)
     build = db.fetch(buildQuery)
 
     if len(build) == 0:

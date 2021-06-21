@@ -64,7 +64,7 @@ class Builds(commands.Cog):
   @commands.command(aliases = ['b'])
   async def build(self, ctx, *, input):
     input = input.lower()
-    #query = self.fetchBuildQuery(input)
+    print(self.fetchBuildQuery(input))
 
     checkSet = input.split()[0]
     buildquery = ""
@@ -217,7 +217,7 @@ class Builds(commands.Cog):
       # Check that flag was successfully converted
       if convertedFlag == None:
         return None
-        
+
       query += convertedFlag
 
     return query

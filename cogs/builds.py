@@ -64,36 +64,16 @@ class Builds(commands.Cog):
   @commands.command(aliases = ['b'])
   async def build(self, ctx, *, input):
     input = input.lower()
-    print(self.fetchBuildQuery(input))
 
-    checkSet = input.split()[0]
-    buildquery = ""
+    # Process input and separate flag and character name values
+    processedInput = self.processBuildInputs(input)
 
-    validSets = [
-      'speed', 
-      'hit', 
-      'crit', 
-      'attack', 
-      'health', 
-      'defense', 
-      'resist', 
-      'destruction', 
-      'lifesteal', 
-      'counter', 
-      'immunity', 
-      'rage', 
-      'unity', 
-      'revenge', 
-      'injury', 
-      'penetration'
-    ]
+    if processedInput == None:
+      await ctx.send("Error with flags.")
+      return
 
-    if not (checkSet in validSets):
-      buildquery = "SELECT ImageLink FROM Builds WHERE CharacterName = ? ORDER BY RANDOM() LIMIT 1"
-      character = input
-    else:
-      buildquery = "SELECT ImageLink FROM Builds WHERE CharacterName = ? AND MainSet = ? ORDER BY RANDOM() LIMIT 1"
-      character = input[len(checkSet) + 1:]
+    character = processedInput[0]
+    flags = processedInput[1]
 
     # Check if the character being searched for is valid
     namequery = "SELECT name FROM Names WHERE alias = ?"
@@ -103,11 +83,12 @@ class Builds(commands.Cog):
       await ctx.send("No such character found.")
       return
 
+    # Build the query for the build
+    buildQuery = self.fetchBuildQuery(name, flags)
+
     # Attempt to fetch a build for specified character from the database
-    if checkSet in validSets:
-      build = db.fetch(buildquery, name[0][0], checkSet)
-    else:
-      build = db.fetch(buildquery, name[0][0])
+    build = db.fetch(buildQuery)
+
     if len(build) == 0:
       await ctx.send("No builds found.")
       return
@@ -159,31 +140,8 @@ class Builds(commands.Cog):
 
   # HELPER METHODS
 
-  # Converts a flag to an appropriate query piece as necessary
-  def convertFlagToQuery(self, flag):
-    # Check that flag is formatted properly
-    tokens = flag.split('=')
-    if not len(tokens) == 2:
-      return None
-
-    textFlag = tokens[0]
-    value = tokens[1]
-
-    # Dictionary of flags to query pieces
-    flagToQuery = {
-      "-mainset" : "MainSet = "
-    }
-
-    # Check if the flag is proper
-    if not textFlag in flagToQuery.keys():
-      return None
-
-    query = flagToQuery[textFlag] + tokens[1]
-
-    return query
-
-  # Returns a query based on specified inputs
-  def fetchBuildQuery(self, input):
+  # Processes inputs for the ?build command
+  def processBuildInputs(self, input):
     character = [] # Represents list of tokens representing the character
     flags = [] # Represents list of tokens representing flags
 
@@ -206,8 +164,35 @@ class Builds(commands.Cog):
 
       count += 1
 
+    return (character, flags)
+
+  # Converts a flag to an appropriate query piece as necessary
+  def convertFlagToQuery(self, flag):
+    # Check that flag is formatted properly
+    tokens = flag.split('=')
+    if not len(tokens) == 2:
+      return None
+
+    textFlag = tokens[0]
+    value = tokens[1]
+
+    # Dictionary of flags to query pieces
+    flagToQuery = {
+      "-mainset" : "MainSet = "
+    }
+
+    # Check if the flag is proper
+    if not textFlag in flagToQuery.keys():
+      return None
+
+    query = flagToQuery[textFlag] + value
+
+    return query
+
+  # Returns a query based on specified inputs
+  def fetchBuildQuery(self, characterString, flags):
     # Initial query
-    query = f"SELECT ImageLink FROM Builds WHERE CharacterName = {characterString}"
+    query = f"SELECT ImageLink FROM Builds WHERE CharacterName = {characterString} "
 
     # Add onto query for each flag
     for flag in flags:
@@ -220,8 +205,7 @@ class Builds(commands.Cog):
 
       query += convertedFlag
 
-    return query
-
+    return (characterString, query)
 
 
 def setup(client):

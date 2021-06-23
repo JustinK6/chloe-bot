@@ -109,7 +109,8 @@ class Builds(commands.Cog):
     flags = [
       "-mainset: The main set the unit equipped ('speed', 'hit', 'crit', 'attack', 'health', 'defense', 'resist', 'destruction', 'lifesteal', 'counter', 'rage', 'unity', 'revenge', 'injury'",
       "-minspeed: Minimum speed of the build - any number",
-      "-maxspeed: Maximum speed of the build - any number"
+      "-maxspeed: Maximum speed of the build - any number",
+      "-immunity: Whether unit is on immunity - 'yes' or 'no'"
     ]
 
     for flag in flags:
@@ -205,7 +206,8 @@ class Builds(commands.Cog):
     flagToQuery = {
       "-mainset" : f"MainSet = \'{value}\' ",
       "-minspeed" : f"Speed >= {value} ",
-      "-maxspeed" : f"Speed <= {value} "
+      "-maxspeed" : f"Speed <= {value} ",
+      "-immunity" : f"Immunity = \'{value}\'"
     }
 
     # Check if the flag is proper

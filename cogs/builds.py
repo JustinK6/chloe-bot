@@ -11,18 +11,24 @@ class Builds(commands.Cog):
   # DEVELOPER ONLY COMMANDS
 
   @commands.command()
-  async def addbuild(self, ctx, link, set, immunity, attack, defense, health, speed, cchance, cdamage, effectiveness, effectresist, *, character):
+  async def addbuild(self, ctx, link, set, attack, defense, health, speed, cchance, cdamage, effectiveness, effectresist, *, character):
     author = ctx.message.author.id
     if author != 277851099850080258:
       return
 
-    if set in ['speed', 'hit', 'crit', 'attack', 'health', 'defense', 'resist', 'destruction', 'lifesteal', 'counter', 'rage', 'unity', 'revenge', 'injury', 'penetration']:
-      query = "INSERT INTO Builds VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-      db.execute(query, character, link, set, attack, defense, health, speed, cchance, cdamage, effectiveness, effectresist, immunity)
+    sets = set.split(',')
+
+    for s in sets:
+      if not s in ['speed', 'hit', 'crit', 'attack', 'health', 'defense', 'resist', 'destruction', 'lifesteal', 'counter', 'rage', 'unity', 'revenge', 'injury', 'penetration']:
+        await ctx.send("Invalid sets.")
+        return
+        
+    query = "INSERT INTO Builds VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    db.execute(query, character, link, set, attack, defense, health, speed, cchance, cdamage, effectiveness, effectresist)     
 
   @commands.command()
   async def addname(self, ctx, *, combined):
-    author = ctx.message.author.id
+    author = ctx.message.author.id 
     if author != 277851099850080258:
       return
 
@@ -104,14 +110,13 @@ class Builds(commands.Cog):
   # Help command for the build command
   @commands.command(aliases=['bh'])
   async def buildhelp(self, ctx):
-    resultString = "Build command format: ?build/?b [-flag(s)] [character name/alias]\nExample command: ?b -set=speed -minspeed=290 acoli"
+    resultString = "Build command format: ?build/?b [-flag(s)] [character name/alias]\nExample command: ?b -set=speed -set=crit -minspeed=290 acoli"
     resultString += "\n\nCurrent List of flags:\n```"
 
     flags = [
       "-set: A set the unit equipped excluding immunity ('speed', 'hit', 'crit', 'attack', 'health', 'defense', 'resist', 'destruction', 'lifesteal', 'counter', 'rage', 'unity', 'revenge', 'injury', 'penetration')",
       "-minspeed: Minimum speed of the build - any number",
       "-maxspeed: Maximum speed of the build - any number",
-      "-immunity: Whether unit is on immunity - 'yes' or 'no'"
     ]
 
     for flag in flags:

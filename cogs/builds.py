@@ -104,11 +104,11 @@ class Builds(commands.Cog):
   # Help command for the build command
   @commands.command(aliases=['bh'])
   async def buildhelp(self, ctx):
-    resultString = "Build command format: ?build/?b [-flag(s)] [character name/alias]\nExample command: ?b -mainset=speed -minspeed=290 acoli"
+    resultString = "Build command format: ?build/?b [-flag(s)] [character name/alias]\nExample command: ?b -set=speed -minspeed=290 acoli"
     resultString += "\n\nCurrent List of flags:\n```"
 
     flags = [
-      "-mainset: The main set the unit equipped ('speed', 'hit', 'crit', 'attack', 'health', 'defense', 'resist', 'destruction', 'lifesteal', 'counter', 'rage', 'unity', 'revenge', 'injury', 'penetration'",
+      "-set: A set the unit equipped excluding immunity ('speed', 'hit', 'crit', 'attack', 'health', 'defense', 'resist', 'destruction', 'lifesteal', 'counter', 'rage', 'unity', 'revenge', 'injury', 'penetration')",
       "-minspeed: Minimum speed of the build - any number",
       "-maxspeed: Maximum speed of the build - any number",
       "-immunity: Whether unit is on immunity - 'yes' or 'no'"
@@ -205,7 +205,7 @@ class Builds(commands.Cog):
 
     # Dictionary of flags to query pieces
     flagToQuery = {
-      "-set" : f"MainSet = \'{value}\' ",
+      "-set" : f"Sets LIKE \'%{value}%\' ",
       "-minspeed" : f"Speed >= {value} ",
       "-maxspeed" : f"Speed <= {value} ",
       "-immunity" : f"Immunity = \'{value}\'"

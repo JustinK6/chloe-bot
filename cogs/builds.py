@@ -221,7 +221,7 @@ class Builds(commands.Cog):
   # Returns a query based on specified inputs
   def fetchBuildQuery(self, characterString, flags):
     # Initial query
-    query = f"SELECT ImageLink FROM Builds WHERE CharacterName = \'{characterString}\' "
+    query = f"SELECT ImageLink FROM Builds WHERE CharacterName = \"{characterString}\" "
 
     # Add onto query for each flag
     for flag in flags:

@@ -19,7 +19,7 @@ class Builds(commands.Cog):
     sets = set.split(',')
 
     for s in sets:
-      if not s in ['speed', 'hit', 'crit', 'attack', 'health', 'defense', 'resist', 'destruction', 'lifesteal', 'counter', 'rage', 'unity', 'revenge', 'injury', 'penetration']:
+      if not s in ['speed', 'hit', 'crit', 'attack', 'health', 'defense', 'resist', 'destruction', 'lifesteal', 'immunity', 'counter', 'rage', 'unity', 'revenge', 'injury', 'penetration']:
         await ctx.send("Invalid sets.")
         return
         

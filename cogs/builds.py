@@ -15,9 +15,10 @@ class Builds(commands.Cog):
     author = ctx.message.author.id
     if author != 277851099850080258:
       return
-    
-    query = "INSERT INTO Builds VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-    db.execute(query, character, link, set, attack, defense, health, speed, cchance, cdamage, effectiveness, effectresist, immunity)
+
+    if set in ['speed', 'hit', 'crit', 'attack', 'health', 'defense', 'resist', 'destruction', 'lifesteal', 'counter', 'rage', 'unity', 'revenge', 'injury', 'penetration']:
+      query = "INSERT INTO Builds VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+      db.execute(query, character, link, set, attack, defense, health, speed, cchance, cdamage, effectiveness, effectresist, immunity)
 
   @commands.command()
   async def addname(self, ctx, *, combined):
@@ -107,7 +108,7 @@ class Builds(commands.Cog):
     resultString += "\n\nCurrent List of flags:\n```"
 
     flags = [
-      "-mainset: The main set the unit equipped ('speed', 'hit', 'crit', 'attack', 'health', 'defense', 'resist', 'destruction', 'lifesteal', 'counter', 'rage', 'unity', 'revenge', 'injury'",
+      "-mainset: The main set the unit equipped ('speed', 'hit', 'crit', 'attack', 'health', 'defense', 'resist', 'destruction', 'lifesteal', 'counter', 'rage', 'unity', 'revenge', 'injury', 'penetration'",
       "-minspeed: Minimum speed of the build - any number",
       "-maxspeed: Maximum speed of the build - any number",
       "-immunity: Whether unit is on immunity - 'yes' or 'no'"
@@ -204,7 +205,7 @@ class Builds(commands.Cog):
 
     # Dictionary of flags to query pieces
     flagToQuery = {
-      "-mainset" : f"MainSet = \'{value}\' ",
+      "-set" : f"MainSet = \'{value}\' ",
       "-minspeed" : f"Speed >= {value} ",
       "-maxspeed" : f"Speed <= {value} ",
       "-immunity" : f"Immunity = \'{value}\'"

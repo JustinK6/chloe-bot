@@ -114,7 +114,7 @@ class Builds(commands.Cog):
     resultString += "\n\nCurrent List of flags:\n```"
 
     flags = [
-      "-set: A set the unit equipped excluding immunity ('speed', 'hit', 'crit', 'attack', 'health', 'defense', 'resist', 'destruction', 'lifesteal', 'counter', 'rage', 'unity', 'revenge', 'injury', 'penetration')",
+      "-set: A set the unit equipped excluding immunity ('speed', 'hit', 'crit', 'attack', 'health', 'defense', 'resist', 'destruction', 'lifesteal', 'immunity', 'counter', 'rage', 'unity', 'revenge', 'injury', 'penetration')",
       "-minspeed: Minimum speed of the build - any number",
       "-maxspeed: Maximum speed of the build - any number",
     ]
@@ -240,7 +240,7 @@ class Builds(commands.Cog):
 
       query += convertedFlag
 
-    query += "ORDER BY RANDOM() LIMIT 1"
+    query += "ORDER BY RANDOM() LIMIT 3"
 
     return query
 

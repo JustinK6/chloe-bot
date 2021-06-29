@@ -48,15 +48,6 @@ class Builds(commands.Cog):
     db.execute(query, link)
 
   @commands.command()
-  async def removeopbuild(self, ctx, link):
-    author = ctx.message.author.id
-    if author != 277851099850080258:
-      return
-    
-    query = "DELETE FROM OPBuilds WHERE ImageLink = ?"
-    db.execute(query, link)
-
-  @commands.command()
   async def removename(self, ctx, *, alias):
     author = ctx.message.author.id
     if author != 277851099850080258:
@@ -104,8 +95,13 @@ class Builds(commands.Cog):
     if len(build) == 0:
       await ctx.send("No builds found. Try ?buildhelp, or ?bc for a list of characters with builds.")
       return
+
+    resultString = ""
+    for build in build[0]:
+      resultString += build
+      resultString += "\n"
     
-    await ctx.send(build[0][0])
+    await ctx.send(resultString)
 
   # Help command for the build command
   @commands.command(aliases=['bh'])

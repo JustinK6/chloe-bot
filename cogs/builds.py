@@ -99,7 +99,6 @@ class Builds(commands.Cog):
     resultString = ""
     for build in build:
       resultString += build[0]
-      resultString += "\n"
     
     await ctx.send(resultString)
 

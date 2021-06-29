@@ -97,6 +97,7 @@ class Builds(commands.Cog):
       return
 
     resultString = ""
+    print(build)
     for build in build[0]:
       resultString += build
       resultString += "\n"

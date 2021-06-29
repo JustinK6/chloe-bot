@@ -96,11 +96,8 @@ class Builds(commands.Cog):
       await ctx.send("No builds found. Try ?buildhelp, or ?bc for a list of characters with builds.")
       return
 
-    resultString = ""
     for build in build:
-      resultString += build[0]
-    
-    await ctx.send(resultString)
+      await ctx.send(build[0])
 
   # Help command for the build command
   @commands.command(aliases=['bh'])

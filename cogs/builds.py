@@ -97,9 +97,8 @@ class Builds(commands.Cog):
       return
 
     resultString = ""
-    print(build)
-    for build in build[0]:
-      resultString += build
+    for build in build:
+      resultString += build[0]
       resultString += "\n"
     
     await ctx.send(resultString)

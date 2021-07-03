@@ -40,7 +40,7 @@ class Jokes(commands.Cog):
   async def kas(self, ctx):
     await ctx.send('Kas is a TRAITOR :frowning:')
 
-  @commands.command()
+  @commands.command(aliases=['t'])
   async def trepid(self, ctx):
     await ctx.send('TREPID SUPREMACY!')
 

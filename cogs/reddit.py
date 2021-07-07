@@ -21,7 +21,8 @@ class Reddit(commands.Cog):
     submissions = []
 
     async for submission in subreddit.search("flair:Art", 'new', limit = 50):
-      submissions.append(submission)
+      if not "gallery" in submission.url:
+        submissions.append(submission)
 
     chosen =  random.choice(submissions)
     await ctx.send(chosen.url)

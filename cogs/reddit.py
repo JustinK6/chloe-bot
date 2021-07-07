@@ -14,7 +14,6 @@ class Reddit(commands.Cog):
       client_secret = os.getenv("REDDIT_SECRET"),
       user_agent = os.getenv("REDDIT_USER_AGENT"),
     )
-  
 
   @commands.command()
   async def art(self, ctx):
@@ -33,7 +32,8 @@ class Reddit(commands.Cog):
     submissions = []
 
     async for submission in subreddit.search("flair:Cat Picture"):
-      submissions.append(submission)
+      if not "gallery" in submission.url:
+        submissions.append(submission)
 
     chosen =  random.choice(submissions)
     await ctx.send(chosen.url)

@@ -18,9 +18,11 @@ class Utils(commands.Cog):
   @commands.Cog.listener()
   async def on_member_join(self, member):
     # Fetch welcome channel
-    channel = self.client.get_channel(437118873150685196)
-    print("join")
-    await channel.send(f"{member.name} has joined")
+    channel = self.client.get_channel(775185721182388275)
+
+    await channel.send(f"""Welcome {member.mention}! Please make sure the read the rules, and one of
+     our mods will be with you shortly to give you roles that will grant you access to the rest of the 
+     channels in the server!""")
 
   @commands.Cog.listener()
   async def on_member_remove(self, member):

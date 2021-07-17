@@ -20,9 +20,8 @@ class Utils(commands.Cog):
     # Fetch welcome channel
     channel = self.client.get_channel(775185721182388275)
 
-    await channel.send(f"""Welcome {member.mention}! Please make sure the read the rules, and one of
-     our mods will be with you shortly to give you roles that will grant you access to the rest of the 
-     channels in the server!""")
+    await channel.send(f"Welcome {member.mention}! Please make sure the read the rules, and one of our mods will be with you shortly to give you roles that will grant you access to the rest of the channels in the server!")
+    await channel.send("https://cdn.discordapp.com/attachments/865877909662859264/865877933180190720/Tamarinne252C2BKarin252C2Band2BArky2Bare2Bhere2Bto2Bwelcome2Bour2BHeirs2521.png")
 
   @commands.Cog.listener()
   async def on_member_remove(self, member):

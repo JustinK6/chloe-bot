@@ -18,8 +18,8 @@ class Utils(commands.Cog):
   @commands.Cog.listener()
   async def on_member_join(self, member):
     # Fetch welcome channel
-    channel = self.client.get_channel(857188035368321034)
-
+    channel = self.client.get_channel(437118873150685196)
+    print("join")
     await channel.send(f"{member.name} has joined")
 
   @commands.Cog.listener()

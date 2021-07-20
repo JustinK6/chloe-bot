@@ -44,6 +44,10 @@ class Jokes(commands.Cog):
   async def trepid(self, ctx):
     await ctx.send('TREPID SUPREMACY!')
 
+  @commands.command(aliases=['f'])
+  async def fathom(self, ctx):
+    await ctx.send('FATHOM SUPREMACY!')
+
   @commands.command()
   async def boba(self, ctx):
     await ctx.send('Someone get this man to join a tourny already')

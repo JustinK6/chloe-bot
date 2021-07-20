@@ -50,7 +50,7 @@ class Tourny(commands.Cog):
       (reactMessageID) = value
 
     # Check if reaction is on reaction message
-    if payload.message_id == int(reactMessageID[0]):
+    if payload.message_id == int(reactMessageID[0] and not payload.user_id == 171782191188017152):
       name = payload.member.display_name
       id = payload.member.id
       role = discord.utils.get(payload.member.guild.roles, name = "Tourny")

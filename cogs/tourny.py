@@ -18,9 +18,12 @@ class Tourny(commands.Cog):
     await ctx.send("Tournament has been reset!")
 
   # Creates a message to notify the initialization of tourny, upon reactions players will be added to the tourny
-  @commands.has_permissions(administrator=True)
   @commands.command(aliases = ['it'])
   async def initializeTourny(self, ctx, *, date):
+    author = ctx.message.author.id
+    if author != 277851099850080258:
+      return
+
     tournyMessage = await ctx.send(f"React to this message to be added to the tourny roster on {date}! \n<a:maidbonk:855548328108228609> to be added to the tourny \n<:_Pepe_ludwig:840158099091226664> if you would like to not join, but still be given a role to be pinged when matches occur")
     await tournyMessage.add_reaction("<a:maidbonk:855548328108228609>")
     await tournyMessage.add_reaction("<:_Pepe_ludwig:840158099091226664>")
@@ -83,16 +86,22 @@ class Tourny(commands.Cog):
     resultString += "```"
     await ctx.send(resultString)
 
-  @commands.has_permissions(administrator=True)
   @commands.command(aliases = ['ar'])
   async def addToRoster(self, ctx, id, nick, guildID):
+    author = ctx.message.author.id
+    if author != 277851099850080258:
+      return
+
     query = "INSERT INTO Roster VALUES (?,?,?);"
     db.execute(query, id, nick, guildID)
 
   # Generates tournament brackets
-  @commands.has_permissions(administrator=True)
   @commands.command(aliases = ['gb'])
   async def generateBracket(self, ctx):
+    author = ctx.message.author.id
+    if author != 277851099850080258:
+      return
+
     # Remove any previous bracket information
     guildID = ctx.channel.guild.id
     query = "DELETE FROM Matches WHERE guild_id = ?"
@@ -158,9 +167,12 @@ class Tourny(commands.Cog):
 
     await ctx.send(resultString)
 
-  @commands.has_permissions(administrator=True)
   @commands.command(aliases = ['ub'])
   async def updateBracket(self, ctx, match, winner):
+    author = ctx.message.author.id
+    if author != 277851099850080258:
+      return
+    
     # Fetch match winner from database
     try:
       match = int(match)

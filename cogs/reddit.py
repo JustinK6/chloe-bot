@@ -20,7 +20,7 @@ class Reddit(commands.Cog):
     subreddit = await self.reddit.subreddit("EpicSeven")
     submissions = []
 
-    async for submission in subreddit.search("flair:Art", 'new', limit = 50):
+    async for submission in subreddit.search("flair:Art", 'new'):
       if not "gallery" in submission.url:
         submissions.append(submission)
 
@@ -32,7 +32,7 @@ class Reddit(commands.Cog):
     subreddit = await self.reddit.subreddit("cats")
     submissions = []
 
-    async for submission in subreddit.search("flair:Cat Picture", 'new', limit = 50):
+    async for submission in subreddit.search("flair:Cat Picture", 'new'):
       if not "gallery" in submission.url:
         submissions.append(submission)
 

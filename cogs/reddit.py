@@ -4,7 +4,7 @@ import asyncpraw
 import os
 
 from discord.ext import commands
-from dotenv  import load_dotenv
+from dotenv import load_dotenv
 
 class Reddit(commands.Cog):
   def __init__(self, client):

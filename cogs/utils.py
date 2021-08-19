@@ -74,5 +74,13 @@ class Utils(commands.Cog):
     
     db.execute(query)
 
+  @commands.command(aliases = ['t'])
+  async def trepid(self, ctx):
+     await ctx.send("TREPID SUPREMACY!")
+
+  @commands.command(aliases = ['f'])
+  async def fathom(self, ctx):
+     await ctx.send("TREPID SUPREMACY!")
+
 def setup(client):
   client.add_cog(Utils(client))

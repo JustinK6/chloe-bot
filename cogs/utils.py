@@ -80,7 +80,11 @@ class Utils(commands.Cog):
 
   @commands.command(aliases = ['f'])
   async def fathom(self, ctx):
-     await ctx.send("TREPID SUPREMACY!")
+     await ctx.send("FATHOM SUPREMACY!")
+
+  @commands.command(aliases = ['j'])
+  async def jinxed(self, ctx):
+     await ctx.send("JINXED SUPREMACY!")
 
 def setup(client):
   client.add_cog(Utils(client))

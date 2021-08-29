@@ -13,7 +13,7 @@ class Builds(commands.Cog):
   @commands.command()
   async def addbuild(self, ctx, link, set, attack, defense, health, speed, cchance, cdamage, effectiveness, effectresist, *, character):
     author = ctx.message.author.id
-    if author != 277851099850080258:
+    if not (author == 277851099850080258 or author == 171782191188017152 or author == 154848534519218176):
       return
 
     sets = set.split(',')
@@ -238,4 +238,4 @@ class Builds(commands.Cog):
 
 
 def setup(client):
-  client.add_cog(Builds(client))
+  client.add_cog(Builds(client)) 

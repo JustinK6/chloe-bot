@@ -8,56 +8,6 @@ class Builds(commands.Cog):
   def __init__(self, client):
     self.client = client
 
-  # DEVELOPER ONLY COMMANDS
-
-  @commands.command()
-  async def addbuild(self, ctx, link, set, attack, defense, health, speed, cchance, cdamage, effectiveness, effectresist, *, character):
-    author = ctx.message.author.id
-    if not (author == 277851099850080258 or author == 171782191188017152 or author == 154848534519218176):
-      return
-
-    sets = set.split(',')
-
-    for s in sets:
-      if not s in ['speed', 'hit', 'crit', 'attack', 'health', 'defense', 'resist', 'destruction', 'lifesteal', 'immunity', 'counter', 'rage', 'unity', 'revenge', 'injury', 'penetration']:
-        await ctx.send("Invalid sets.")
-        return
-        
-    query = "INSERT INTO Builds VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-    db.execute(query, character, link, set, attack, defense, health, speed, cchance, cdamage, effectiveness, effectresist)     
-
-  @commands.command()
-  async def addname(self, ctx, *, combined):
-    author = ctx.message.author.id 
-    if author != 277851099850080258:
-      return
-
-    alias = combined.split(',')[0]
-    name = combined.split(',')[1]
-    
-    query = "INSERT INTO Names VALUES (?, ?)"
-    db.execute(query, alias, name)
-
-  @commands.command()
-  async def removebuild(self, ctx, link):
-    author = ctx.message.author.id
-    if author != 277851099850080258:
-      return
-    
-    query = "DELETE FROM Builds WHERE ImageLink = ?"
-    db.execute(query, link)
-
-  @commands.command()
-  async def removename(self, ctx, *, alias):
-    author = ctx.message.author.id
-    if author != 277851099850080258:
-      return
-    
-    query = "DELETE FROM Names WHERE alias = ?"
-    db.execute(query, alias)
-
-  # REGULAR COMMANDS
-
   # Gets the build of a specified character
   @commands.command(aliases = ['b'])
   async def build(self, ctx, *, input):

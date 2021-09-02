@@ -51,5 +51,70 @@ class Utils(commands.Cog):
     except Exception as error:
       await ctx.send(f"Can't clear messages : {error}")
 
+  # Overall help command
+  @commands.command()
+  async def help(self, ctx):
+    embed = discord.Embed(
+      title = "Queen Chloe Help",
+      description = "Commands help for the queen chloe bot."
+    )
+
+    # Set thumbnail
+    embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/882867390554210325/882867525925367858/pmtntt4lyys61.png")
+
+    # Add help text/fields for command groups
+    embed.add_field(name = "?buildhelp", value = "Use this command for help with commands dealing with builds.", inline = False)
+    embed.add_field(name = "?tournyhelp", value = "Use this command for help with commands dealing with tournies.", inline = False)
+    embed.add_field(name = "?mischelp", value = "Use this command to explore other misc commands available in the bot.", inline = False)
+
+    await ctx.send(embed = embed)
+
+
+  # Subcategory help commands
+  @commands.command()
+  async def buildhelp(self, ctx):
+    embed = discord.Embed(
+      title = "Queen Chloe Help - Builds",
+      description = "Commands help for build commands for the queen chloe bot."
+    )
+
+    # Set thumbnail
+    embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/882867390554210325/882867525925367858/pmtntt4lyys61.png")
+
+    # Add help text/fields for commands
+    embed.add_field(name = "?build [?b] <FLAG(s)> <HERO NAME>", value = "Command to fetch a build of a character. For info about flags, use ?flags or ?f.", inline = False)
+    embed.add_field(name = "?buildcount [?bc]", value = "Command to fetch a count of the number of builds currently stored for each character.", inline = False)
+    embed.add_field(name = "?flags", value = "Command to fetch info about current available flags, as well as how to use them.", inline = False)
+
+    await ctx.send(embed = embed)
+
+  @commands.command()
+  async def tournyhelp(self, ctx):
+    embed = discord.Embed(
+      title = "Queen Chloe Help - Tourny",
+      description = "COMING SOON!"
+    )
+
+    # Set thumbnail
+    embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/882867390554210325/882867525925367858/pmtntt4lyys61.png")
+
+    await ctx.send(embed = embed)
+
+  @commands.command()
+  async def mischelp(self, ctx):
+    embed = discord.Embed(
+      title = "Queen Chloe Help - Misc",
+      description = "Commands help for miscellaneous commands for the queen chloe bot."
+    )
+
+    # Set thumbnail
+    embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/882867390554210325/882867525925367858/pmtntt4lyys61.png")
+
+    embed.add_field(name = "?coin [?c]", value = "Flip a coin. Heads or tails?", inline = False)
+    embed.add_field(name = "?cr <YOUR SPEED> <ENEMY CR>", value = "Calculate approximate enemy speed using your unit's speed and the enemy's position on the CR bar", inline = False)
+    embed.add_field(name = "?8ball <QUESTION>", value = "Ask the magic 8 ball a question!", inline = False)
+
+    await ctx.send(embed = embed)
+
 def setup(client):
   client.add_cog(Utils(client))

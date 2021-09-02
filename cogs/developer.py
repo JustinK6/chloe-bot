@@ -17,9 +17,9 @@ class Developer(commands.Cog):
     if not message.channel.id == 854616929682849864:
       return
 
-    result = self.attemptAddBuild(message.attachments[0].url)
+    #result = self.attemptAddBuild(message.attachments[0].url)
     channel = self.client.get_channel(857188035368321034)
-    await channel.send(result)
+    await channel.send(message.attachments[0].url)
 
   # Manual command to add builds to bot database
   @commands.command()

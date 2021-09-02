@@ -72,7 +72,7 @@ class Tourny(commands.Cog):
   # Displays the roster of those added to the tourny
   @commands.command(aliases = ['roster'])
   async def _roster(self, ctx):
-    resultString = "```Current tournament roster:"
+    resultString = "Current tournament roster:```"
 
     # Get roster from database
     guildID = ctx.channel.guild.id

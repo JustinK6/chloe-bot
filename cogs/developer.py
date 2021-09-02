@@ -68,6 +68,14 @@ class Developer(commands.Cog):
     query = "DELETE FROM Names WHERE alias = ?"
     db.execute(query, alias)
 
+  @commands.command()
+  async def query(self, ctx, *, query):
+    author = ctx.message.author.id
+    if author != 277851099850080258:
+      return
+    
+    db.execute(query)
+
   # Helper command to attempt to read data from build images
   def attemptAddBuild(self, input):
     url = input

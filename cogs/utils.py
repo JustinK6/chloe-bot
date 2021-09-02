@@ -17,8 +17,15 @@ class Utils(commands.Cog):
 
   @commands.Cog.listener()
   async def on_member_join(self, member):
-    # Fetch welcome channel
-    channel = self.client.get_channel(775185721182388275)
+    # Fetch welcome channel of guild from the database if there is one
+    query = "SELECT welcome_id FROM Guilds WHERE guild_id = ?"
+    welcomeChannel = db.fetch(query, member.guild.id)
+
+    # Make sure guild has a welcome channel
+    if len(welcomeChannel) == 0:
+      return
+
+    channel = self.client.get_channel(welcomeChannel[0][0])
 
     await channel.send(f"Welcome {member.mention}! Please make sure the read the rules, and one of our mods will be with you shortly to give you roles that will grant you access to the rest of the channels in the server!")
     await channel.send("https://cdn.discordapp.com/attachments/865877909662859264/865877933180190720/Tamarinne252C2BKarin252C2Band2BArky2Bare2Bhere2Bto2Bwelcome2Bour2BHeirs2521.png")
@@ -31,6 +38,14 @@ class Utils(commands.Cog):
   @commands.command()
   async def ping(self, ctx):
     await ctx.send(f'Pong! {round(self.client.latency * 1000)}ms')
+
+  @commands.command(aliases = ['w'])
+  async def welcome(self, ctx):
+    # Add new row or replace row with guild id of the server
+    query = "INSERT OR REPLACE INTO Guilds VALUES (?, ?)"
+    db.execute(query, ctx.guild.id, ctx.channel.id)
+
+    await ctx.send("Channel set as welcome channel!")
 
   @commands.command()
   async def cr(self, ctx, one, two):
@@ -65,14 +80,6 @@ class Utils(commands.Cog):
       print(amount)
     except Exception as error:
       await ctx.send(f"Can't clear messages : {error}")
-
-  @commands.command()
-  async def query(self, ctx, *, query):
-    author = ctx.message.author.id
-    if author != 277851099850080258:
-      return
-    
-    db.execute(query)
 
   @commands.command(aliases = ['t'])
   async def trepid(self, ctx):

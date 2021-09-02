@@ -113,6 +113,8 @@ class Utils(commands.Cog):
     embed.add_field(name = "?coin [?c]", value = "Flip a coin. Heads or tails?", inline = False)
     embed.add_field(name = "?cr <YOUR SPEED> <ENEMY CR>", value = "Calculate approximate enemy speed using your unit's speed and the enemy's position on the CR bar", inline = False)
     embed.add_field(name = "?8ball <QUESTION>", value = "Ask the magic 8 ball a question!", inline = False)
+    embed.add_field(name = "?art", value = "Grabs a random image from the Epic Seven subreddit with the art flair.", inline = False)
+    embed.add_field(name = "?cat", value = "Grabs a random image from a cat subreddit with the art flair.", inline = False)
 
     await ctx.send(embed = embed)
 

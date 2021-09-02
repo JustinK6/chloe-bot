@@ -86,22 +86,16 @@ class Tourny(commands.Cog):
     resultString += "```"
     await ctx.send(resultString)
 
+  @commands.has_permissions(administrator=True)
   @commands.command(aliases = ['ar'])
   async def addToRoster(self, ctx, id, nick, guildID):
-    author = ctx.message.author.id
-    if author != 277851099850080258:
-      return
-
     query = "INSERT INTO Roster VALUES (?,?,?);"
     db.execute(query, id, nick, guildID)
 
   # Generates tournament brackets
+  @commands.has_permissions(administrator=True)
   @commands.command(aliases = ['gb'])
   async def generateBracket(self, ctx):
-    author = ctx.message.author.id
-    if author != 277851099850080258:
-      return
-
     # Remove any previous bracket information
     guildID = ctx.channel.guild.id
     query = "DELETE FROM Matches WHERE guild_id = ?"
@@ -167,6 +161,7 @@ class Tourny(commands.Cog):
 
     await ctx.send(resultString)
 
+  @commands.has_permissions(administrator=True)
   @commands.command(aliases = ['ub'])
   async def updateBracket(self, ctx, match, winner):
     author = ctx.message.author.id

@@ -4,9 +4,7 @@
 # Environment
 .env
 
-# Database
-/data/.db
-/data/.csv
+/data/
 
 # nohup
 nohup.out

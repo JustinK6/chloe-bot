@@ -6,6 +6,7 @@
 
 # Database
 /data/.db
+/data/.csv
 
 # nohup
 nohup.out

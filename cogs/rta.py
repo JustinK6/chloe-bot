@@ -3,7 +3,7 @@ import discord
 from discord.ext import commands
 from .db import db
 
-class Builds(commands.Cog):
+class RTA(commands.Cog):
   def __init__(self, client):
     self.client = client
 
@@ -187,4 +187,4 @@ class Builds(commands.Cog):
     await ctx.send(embed = self.getEmbed(nameString, overallWinrate, prebanRate, postbanRate)) 
 
 def setup(client):
-  client.add_cog(Builds(client)) 
+  client.add_cog(RTA(client)) 

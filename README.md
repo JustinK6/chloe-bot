@@ -1,2 +1,2 @@
 # chloe-bot
-Discord bot for managing tournaments and along with providing other utility.
+Discord bot for referencing Epic 7 builds and some experimental RTA data features.

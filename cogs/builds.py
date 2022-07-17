@@ -2,6 +2,7 @@ from inspect import currentframe
 import discord
 import asyncio
 
+from discord import app_commands
 from discord.ext import commands
 from .db import db
 
@@ -248,5 +249,5 @@ class Builds(commands.Cog):
     return embeds
 
 
-def setup(client):
-  client.add_cog(Builds(client)) 
+async def setup(client):
+  await client.add_cog(Builds(client), guilds = [discord.Object(id = 437118873150685194)]) 

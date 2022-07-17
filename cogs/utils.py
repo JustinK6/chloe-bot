@@ -1,6 +1,8 @@
 import discord
 
+
 from discord.ext import commands
+
 from .db import db
 from discord.ext.commands import has_permissions
 
@@ -28,6 +30,11 @@ class Utils(commands.Cog):
 
     await channel.send(f"Welcome {member.mention}! Please make sure the read the rules, and one of our mods will be with you shortly to give you roles that will grant you access to the rest of the channels in the server!")
     await channel.send("https://cdn.discordapp.com/attachments/865877909662859264/865877933180190720/Tamarinne252C2BKarin252C2Band2BArky2Bare2Bhere2Bto2Bwelcome2Bour2BHeirs2521.png")
+
+  #@commands.Cog.listener()
+  #async def on_message(self, message):
+    #if message.author.id == 172110998986031105:
+    #  await message.delete()
 
   #Commands
   @commands.command()
@@ -117,5 +124,5 @@ class Utils(commands.Cog):
 
     await ctx.send(embed = embed)
 
-def setup(client):
-  client.add_cog(Utils(client))
+async def setup(client):
+  await client.add_cog(Utils(client), guilds = [discord.Object(id = 437118873150685194)])

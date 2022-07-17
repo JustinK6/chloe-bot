@@ -218,5 +218,5 @@ class RTA(commands.Cog):
 
     await ctx.send(embed = self.getEmbed(nameString, overallWinrate, prebanRate, postbanRate, firstPickRate, worstMatchups)) 
 
-def setup(client):
-  client.add_cog(RTA(client)) 
+async def setup(client):
+  await client.add_cog(RTA(client), guilds = [discord.Object(id = 437118873150685194)]) 

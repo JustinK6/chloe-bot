@@ -95,5 +95,5 @@ class Developer(commands.Cog):
     text = pytesseract.image_to_string(im)
     return text
     
-def setup(client):
-  client.add_cog(Developer(client)) 
+async def setup(client):
+  await client.add_cog(Developer(client), guilds = [discord.Object(id = 437118873150685194)]) 

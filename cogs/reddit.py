@@ -39,5 +39,5 @@ class Reddit(commands.Cog):
     chosen =  random.choice(submissions)
     await ctx.send(chosen.url)
 
-def setup(client):
-  client.add_cog(Reddit(client))
+async def setup(client):
+  await client.add_cog(Reddit(client), guilds = [discord.Object(id = 437118873150685194)])

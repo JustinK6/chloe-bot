@@ -1,28 +1,29 @@
 import discord
 import os
 
+from discord import app_commands
 from discord.ext import commands
 from dotenv import load_dotenv
 
 load_dotenv()
-
-intents = discord.Intents.default()
-intents.members = True
-
-client = commands.Bot(command_prefix = '?', intents=intents)
-client.remove_command('help')
 token = os.getenv("DISCORD_TOKEN")
 
-@client.command()
-async def load(ctx, extension):
-  client.load_extension(f'cogs.{extension}')
+class ChloeBot(commands.Bot):
+  def __init__(self):
+    super().__init__(command_prefix = '?', intents = discord.Intents.all()), os.getenv("DISCORD_APPLICATION_ID")
 
-@client.command()
-async def unload(ctx, extension):
-  client.unload_extension(f'cogs.{extension}')
+  async def setup_hook(self):
+    self.remove_command('help')
+    await self.load_extension(f"cogs.utils")
+    await self.load_extension(f"cogs.misc")
+    await self.load_extension(f"cogs.developer")
+    await self.load_extension(f"cogs.rta")
+    await self.load_extension(f"cogs.reddit")
+    await self.load_extension(f"cogs.builds")
+    await bot.tree.sync(guild = discord.Object(id=437118873150685194))
 
-for filename in os.listdir('./cogs'):
-  if (filename.endswith('.py')):
-    client.load_extension(f'cogs.{filename[:-3]}')
+  async def on_ready(self):
+    print(f'{self.user} has connected to discord!')
 
-client.run(token)
+bot = ChloeBot()
+bot.run(token)
